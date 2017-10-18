@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>ATPRequestService</id>
+    <version>0.1</version>
+    <title>ATPRequestService</title>
+    <authors>emersonprocessmanagement</authors>
+    <owners>emersonprocessmanagement</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>To Add ATP Request capability</description>
+    <releaseNotes>First release</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <dependencies>
+     <dependency id="EntityFramework" version="6.1.3" />
+    </dependencies>
+  </metadata>
+</package>
