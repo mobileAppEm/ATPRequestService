@@ -162,7 +162,7 @@ Namespace Controllers
 
 
             End With
-
+            Return l_list
         End Function
         Private Function ExecuteATP(Optional reqobj As ATPRequestObj = Nothing) As ATPRequestObj
             'If reqobj Is Nothing Then
