@@ -64,36 +64,17 @@ Namespace Controllers
             End If
 
             With _connection.CreateCommand()
-                .CommandText = "Select MAST.session_id,
-                     MAST.COMPILE_DESIGNATOR Plan_Name,
-                     MAST.SOURCE_ORGANIZATION_CODE,
-                     MAST.INVENTORY_ITEM_NAME,
-                    (SELECT REPLACE (x.em_string, '.', '-')
-                        FROM apps.xxbom_cust_matching_vlvs x
-                       WHERE     preconfigured_item_id = MAST.inventory_item_id
-                             AND x.organization_id = MAST.source_organization_id
-                             AND NVL (start_date, SYSDATE) <= SYSDATE
-                             AND NVL (end_date, SYSDATE) >= SYSDATE)
-                        Custom_Match,
-                     MAST.QUANTITY_ORDERED,
-                     MAST.UOM_CODE,
-                     XMRP.IN_REQ_DTE_TYPE ,
-                     MAST.REQUESTED_DATE_QUANTITY,
-                     MAST.AVAILABLE_QUANTITY,
-                     MAST.GROUP_SHIP_DATE,
-                     MAST.GROUP_ARRIVAL_DATE,
-                     MAST.scheduled_arrival_date,
-                     MAST.SHIP_METHOD,
-                     MAST.demand_class,
-                     MAST.ERROR_MESSAGE,
-                     MAST.sequence_number,
-                     XMRP.IN_CUST_REQ_DATE,
-                     XMRP.CALC_OFFSET_DAYS,
-                     APPS.XXMRP_FF2_ORC_ATP_VLVS_PKG.xxom_add_sub_lead_time ('ADD',MAST.SCHEDULED_SHIP_DATE,XMRP.CALC_OFFSET_DAYS,XMRP.SHIP_CALENDAR_CODE) Calc_Available_SHIP_DATE,
-                     APPS.XXMRP_FF2_ORC_ATP_VLVS_PKG.xxom_add_sub_lead_time ('ADD',MAST.GROUP_SHIP_DATE,XMRP.CALC_OFFSET_DAYS,XMRP.SHIP_CALENDAR_CODE) Calc_GROUP_Available_SHIP_DATE,
-		             APPS.XXMRP_FF2_ORC_ATP_VLVS_PKG.xxom_add_sub_lead_time ('ADD',MAST.scheduled_arrival_date,XMRP.CALC_OFFSET_DAYS,XMRP.SHIP_CALENDAR_CODE) Calc_scheduled_arrival_date,
-                     APPS.XXMRP_FF2_ORC_ATP_VLVS_PKG.xxom_add_sub_lead_time ('ADD',MAST.GROUP_ARRIVAL_DATE,XMRP.CALC_OFFSET_DAYS,XMRP.SHIP_CALENDAR_CODE) Calc_GROUP_ARRIVAL_DATE
-                    From APPS.MRP_ATP_SCHEDULE_TEMP_V MAST, XXMRP.XXMRP_ATP_INQ_DTLS_EPM XMRP Where status_flag = 2 And mast.session_id = " & Math.Abs(_OracleReq.O_SESSION_ID) & " And XMRP.session_id = mast.session_id ORDER BY SEQUENCE_NUMBER"
+                .CommandText = "Select MAST.session_id, MAST.COMPILE_DESIGNATOR Plan_Name, MAST.SOURCE_ORGANIZATION_CODE, " & _
+                    " MAST.INVENTORY_ITEM_NAME,(SELECT REPLACE (x.em_string, '.', '-') FROM apps.xxbom_cust_matching_vlvs x " & _
+                    " WHERE preconfigured_item_id = MAST.inventory_item_id AND x.organization_id = MAST.source_organization_id AND NVL (start_date, SYSDATE) <= SYSDATE AND NVL (end_date, SYSDATE) >= SYSDATE) Custom_Match, MAST.QUANTITY_ORDERED, MAST.UOM_CODE, XMRP.IN_REQ_DTE_TYPE , MAST.REQUESTED_DATE_QUANTITY," & _
+                    " MAST.AVAILABLE_QUANTITY, MAST.GROUP_SHIP_DATE, MAST.GROUP_ARRIVAL_DATE, MAST.scheduled_arrival_date," & _
+                    " MAST.SHIP_METHOD, MAST.demand_class, MAST.ERROR_MESSAGE, MAST.sequence_number, XMRP.IN_CUST_REQ_DATE," & _
+                    " XMRP.CALC_OFFSET_DAYS," & _
+                    " APPS.XXMRP_FF2_ORC_ATP_VLVS_PKG.xxom_add_sub_lead_time ('ADD',MAST.SCHEDULED_SHIP_DATE,XMRP.CALC_OFFSET_DAYS,XMRP.SHIP_CALENDAR_CODE) Calc_Available_SHIP_DATE," & _
+                    " APPS.XXMRP_FF2_ORC_ATP_VLVS_PKG.xxom_add_sub_lead_time ('ADD',MAST.GROUP_SHIP_DATE,XMRP.CALC_OFFSET_DAYS,XMRP.SHIP_CALENDAR_CODE) Calc_GROUP_Available_SHIP_DATE," & _
+                    " APPS.XXMRP_FF2_ORC_ATP_VLVS_PKG.xxom_add_sub_lead_time ('ADD',MAST.scheduled_arrival_date,XMRP.CALC_OFFSET_DAYS,XMRP.SHIP_CALENDAR_CODE) Calc_scheduled_arrival_date," & _
+                    " APPS.XXMRP_FF2_ORC_ATP_VLVS_PKG.xxom_add_sub_lead_time ('ADD',MAST.GROUP_ARRIVAL_DATE,XMRP.CALC_OFFSET_DAYS,XMRP.SHIP_CALENDAR_CODE) Calc_GROUP_ARRIVAL_DATE " & _
+                    " From APPS.MRP_ATP_SCHEDULE_TEMP_V MAST, XXMRP.XXMRP_ATP_INQ_DTLS_EPM XMRP Where status_flag = 2 And mast.session_id =  & Math.Abs(_OracleReq.O_SESSION_ID) &  And XMRP.session_id = mast.session_id ORDER BY SEQUENCE_NUMBER"
                 Dim dr As Client.OracleDataReader = .ExecuteReader
                 Dim resultString As String
                 resultString = ""
